@@ -1,21 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import routes from './router/routes'
-//import { Route } from 'react-router-dom'
 import { BrowserRouter as Router } from 'react-router-dom'
-//import { Link } from 'react-router-dom'
 import NavComponent from './pages/NavComponent'
-//import LoginPage from './pages/LoginPage'
-//import SignPage from './pages/SignPage'
-//import App from './App'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+
+import addUser from './reducers/userReducer'
+
+const store = createStore(addUser)
 
 ReactDOM.render((
-    <div>
+    <Provider store={store}>
         <Router>
             <NavComponent />
             {routes}
         </Router>
-    </div>
+    </Provider>
 
 ), document.getElementById('root'))
 
