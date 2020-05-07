@@ -1,7 +1,8 @@
 import React from 'react'
 import SignComponent from '../components/SignComponent'
 import { connect } from 'react-redux'
-import {ADD_USER} from '../constants'
+import * as userActions from '../actions/userAction'
+import {bindActionCreators} from 'redux'
 
 class SignPage extends React.Component {
 
@@ -13,7 +14,7 @@ class SignPage extends React.Component {
                     <div className="col-sm">
                     </div>
                     <div className="col-sm">
-                        <SignComponent addUser={this.props.addUser}/>
+                        <SignComponent userActions={this.props.userActions}/>
                     </div>
                     <div className="col-sm">
                     </div>
@@ -22,15 +23,11 @@ class SignPage extends React.Component {
         )
     }
 }
-function mapStateToProps(state) {
+
+const mapDispatchToProps = (dispatch) =>{
     return {
-        user: state.user
+        userActions:bindActionCreators(userActions, dispatch)
     }
 }
 
-function mapDispatchToProps(dispach) {
-    return {
-        addUser: ()=>dispach({type:ADD_USER})
-    }
-}
-export default connect(mapStateToProps,mapDispatchToProps)(SignPage)
+export default connect(null,mapDispatchToProps)(SignPage)

@@ -3,11 +3,6 @@ import { Link } from 'react-router-dom'
 class NavComponent extends React.Component {
     render() {
         return (
-            /*<div>
-                <Link to='/'>home page</Link>
-                <Link to='/sign'>sign page</Link>
-                <Link to='/login'>login page</Link>
-            </div> */
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav mr-auto">

@@ -1,5 +1,5 @@
 import React from 'react'
-const lodash = require('lodash')
+
 
 class SignComponent extends React.Component {
 
@@ -12,10 +12,7 @@ class SignComponent extends React.Component {
             password: '',
             passwordConfirm: '',
             usernameErrorMsg: '',
-            emailErrorMsg: '',
-            passwordErrorMsg: '',
-            passwordConfirmErrorMsg: '',
-            checkResult: true
+            'errors': ''
         }
     }
 
@@ -27,49 +24,20 @@ class SignComponent extends React.Component {
 
     signUp = (e) => {
         e.preventDefault()
-        let { username, email, password, passwordConfirm } = this.state
-
-        this.setState({
-            usernameErrorMsg: '',
-            emailErrorMsg: '',
-            passwordErrorMsg: '',
-            passwordConfirmErrorMsg: ''
-        })
-
-        /* console.log(this.state) */
-        if (lodash.isEmpty(username)) {
-            this.setState({
-                usernameErrorMsg:'请输入用户名',
-                checkResult:false
-            })
-        }
-        if (lodash.isEmpty(email)) {
-            this.setState({
-                emailErrorMsg:'请输入邮箱',
-                checkResult:false
-            })
-        }
-        if (lodash.isEmpty(password)) {
-            this.setState({
-                passwordErrorMsg:'请输入密码',
-                checkResult:false
-            })
-        }
-        if (!lodash.isEqual(password, passwordConfirm)) {
-            this.setState({
-                passwordConfirmErrorMsg:'请确认密码是否一致',
-                checkResult:false
-            })
-        }
-
-        if (this.statecheckResult == true) {
-            let {username,email,password,passwordConfirm} = this.state
-            let user = {username,email,password,passwordConfirm}
-            this.props.addUser(user)
-        }
+        this.props.userActions.addUser(this.state).then(
+            ()=>{
+                console.log('success')
+            },
+            ({response})=>{
+                this.setState({
+                    errors:response.data
+                })
+            }
+        )
     }
 
     render() {
+        const { errors}  = this.state;
         return (
             <form onSubmit={this.signUp}>
                 <br /><br />
@@ -83,7 +51,7 @@ class SignComponent extends React.Component {
                         value={this.state.username}
                         onChange={this.inputChange}
                     />
-                    {this.state.usernameErrorMsg }
+                    { errors.username && <span className="form-text text-muted">{ errors.username }</span> }
                 </div>
                 <div className="form-group">
                     <label htmlFor="exampleInputEmail1">Email address</label>
@@ -95,7 +63,7 @@ class SignComponent extends React.Component {
                         value={this.state.email}
                         onChange={this.inputChange}
                     />
-                    {this.state.emailErrorMsg }
+                    { errors.email && <span className="form-text text-muted">{ errors.email }</span> }
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Password</label>
@@ -107,7 +75,7 @@ class SignComponent extends React.Component {
                         value={this.state.password}
                         onChange={this.inputChange}
                     />
-                    {this.state.passwordErrorMsg }
+                    { errors.password && <span className="form-text text-muted">{ errors.password }</span> }
                 </div>
                 <div className="form-group">
                     <label htmlFor="passwordConfirm">Password Confirm</label>
@@ -119,7 +87,7 @@ class SignComponent extends React.Component {
                         value={this.state.passwordConfirm}
                         onChange={this.inputChange}
                     />
-                    {this.state.passwordConfirmErrorMsg }
+                    { errors.passwordConfirm && <span className="form-text text-muted">{ errors.passwordConfirm }</span> }
                 </div>
                 <button type="submit" className="btn btn-primary">Submit</button>
             </form>
