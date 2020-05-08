@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { withRouter } from "react-router-dom"
 
 class SignComponent extends React.Component {
 
@@ -12,7 +12,7 @@ class SignComponent extends React.Component {
             password: '',
             passwordConfirm: '',
             usernameErrorMsg: '',
-            'errors': ''
+            errors: {}
         }
     }
 
@@ -26,7 +26,7 @@ class SignComponent extends React.Component {
         e.preventDefault()
         this.props.userActions.addUser(this.state).then(
             ()=>{
-                console.log('success')
+                this.props.history.push('/')
             },
             ({response})=>{
                 this.setState({
@@ -34,6 +34,25 @@ class SignComponent extends React.Component {
                 })
             }
         )
+    }
+
+    checkUsernameExist = (e) => {
+        let field = e.target.name
+        let value = e.target.value
+        if (value != '') {
+            this.props.userActions.checkUsernameExist(this.state.username).then(
+                (response)=>{
+
+                    let errors = this.state.errors;
+                    if (response.data[0]) {
+                        errors[field] = "用户名存在"
+                    } else {
+                        errors[field] = ''
+                    }
+                    this.setState({ errors })
+                }
+            )
+        }
     }
 
     render() {
@@ -49,6 +68,7 @@ class SignComponent extends React.Component {
                         id="username"
                         name="username"
                         value={this.state.username}
+                        onBlur={this.checkUsernameExist}
                         onChange={this.inputChange}
                     />
                     { errors.username && <span className="form-text text-muted">{ errors.username }</span> }
@@ -95,4 +115,4 @@ class SignComponent extends React.Component {
     }
 }
 
-export default SignComponent
+export default withRouter(SignComponent)
