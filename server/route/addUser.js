@@ -8,7 +8,7 @@ router.post('/', (req, res) => {
     if(!isValid) {
         res.status(400).json(errors)
     } else {
-        let sql = 'insert into t_users values(null,?,?,?)'
+        let sql = 'insert into users values(null,?,?,?)'
         let param = [req.body.username, req.body.email, req.body.password]
         sqlExcute(sql, param, function(data){
             if(data.affectedRows){

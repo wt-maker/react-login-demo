@@ -7,14 +7,16 @@ import { Provider } from 'react-redux'
 import { createStore,applyMiddleware} from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import thunk from "redux-thunk"
-import addUser from './reducers/userReducer'
+import rootReducer from './reducers'
+import MessageList from './components/MessageList'
 
-const store = createStore(addUser, composeWithDevTools(applyMiddleware(thunk)))
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)))
 
 ReactDOM.render((
     <Provider store={store}>
         <Router>
             <NavComponent />
+            <MessageList />
             {routes}
         </Router>
     </Provider>

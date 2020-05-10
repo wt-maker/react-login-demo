@@ -15,3 +15,9 @@ export const checkUsernameExist = (username) => {
         })
     }
 }
+
+export const login = (user) => {
+    return dispatch => {
+        return axios.post('/api/login',user)
+    }
+}

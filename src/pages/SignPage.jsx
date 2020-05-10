@@ -2,6 +2,7 @@ import React from 'react'
 import SignComponent from '../components/SignComponent'
 import { connect } from 'react-redux'
 import * as userActions from '../actions/userAction'
+import * as messageActions from '../actions/messageAction'
 import {bindActionCreators} from 'redux'
 
 class SignPage extends React.Component {
@@ -14,7 +15,7 @@ class SignPage extends React.Component {
                     <div className="col-sm">
                     </div>
                     <div className="col-sm">
-                        <SignComponent userActions={this.props.userActions}/>
+                        <SignComponent userActions={this.props.userActions} messageActions={this.props.messageActions}/>
                     </div>
                     <div className="col-sm">
                     </div>
@@ -26,7 +27,8 @@ class SignPage extends React.Component {
 
 const mapDispatchToProps = (dispatch) =>{
     return {
-        userActions:bindActionCreators(userActions, dispatch)
+        userActions:bindActionCreators(userActions, dispatch),
+        messageActions:bindActionCreators(messageActions, dispatch)
     }
 }
 

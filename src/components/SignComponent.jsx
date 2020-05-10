@@ -1,5 +1,6 @@
 import React from 'react'
 import { withRouter } from "react-router-dom"
+import classnames  from 'classnames'
 
 class SignComponent extends React.Component {
 
@@ -12,7 +13,8 @@ class SignComponent extends React.Component {
             password: '',
             passwordConfirm: '',
             usernameErrorMsg: '',
-            errors: {}
+            errors: {},
+            isLoading:false
         }
     }
 
@@ -24,13 +26,22 @@ class SignComponent extends React.Component {
 
     signUp = (e) => {
         e.preventDefault()
+        this.setState({
+            errors:{},
+            isLoading:true
+        })
         this.props.userActions.addUser(this.state).then(
             ()=>{
+                this.props.messageActions.addMessage({
+                    type:'success',
+                    text:'注册成功'
+                })
                 this.props.history.push('/')
             },
             ({response})=>{
                 this.setState({
-                    errors:response.data
+                    errors:response.data,
+                    isLoading:false
                 })
             }
         )
@@ -56,7 +67,7 @@ class SignComponent extends React.Component {
     }
 
     render() {
-        const { errors}  = this.state;
+        const { errors, isLoading}  = this.state;
         return (
             <form onSubmit={this.signUp}>
                 <br /><br />
@@ -64,7 +75,7 @@ class SignComponent extends React.Component {
                     <label htmlFor="username">User Name</label>
                     <input
                         type="text"
-                        className="form-control"
+                        className={classnames('form-control', {'is-invalid':errors.username})}
                         id="username"
                         name="username"
                         value={this.state.username}
@@ -76,8 +87,8 @@ class SignComponent extends React.Component {
                 <div className="form-group">
                     <label htmlFor="exampleInputEmail1">Email address</label>
                     <input
-                        type="text"
-                        className="form-control"
+                        type="email"
+                        className={classnames('form-control', {'is-invalid':errors.email})}
                         id="email"
                         name="email"
                         value={this.state.email}
@@ -89,7 +100,7 @@ class SignComponent extends React.Component {
                     <label htmlFor="password">Password</label>
                     <input
                         type="password"
-                        className="form-control"
+                        className={classnames('form-control', {'is-invalid':errors.password})}
                         id="password"
                         name="password"
                         value={this.state.password}
@@ -101,7 +112,7 @@ class SignComponent extends React.Component {
                     <label htmlFor="passwordConfirm">Password Confirm</label>
                     <input
                         type="password"
-                        className="form-control"
+                        className={classnames('form-control', {'is-invalid':errors.passwordConfirm})}
                         id="passwordConfirm"
                         name="passwordConfirm"
                         value={this.state.passwordConfirm}
@@ -109,7 +120,7 @@ class SignComponent extends React.Component {
                     />
                     { errors.passwordConfirm && <span className="form-text text-muted">{ errors.passwordConfirm }</span> }
                 </div>
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="submit" disabled={isLoading} className="btn btn-primary">Submit</button>
             </form>
         )
     }

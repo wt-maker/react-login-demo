@@ -1,6 +1,7 @@
 import React from 'react'
 import LoginComponent from '../components/LoginComponent'
-
+import { connect } from 'react-redux'
+import { login } from '../actions/userAction'
 class LoginPage extends React.Component {
 
     render() {
@@ -10,7 +11,7 @@ class LoginPage extends React.Component {
                     <div className="col-sm">
                     </div>
                     <div className="col-sm">
-                        <LoginComponent />
+                        <LoginComponent login={this.props.login}/>
                     </div>
                     <div className="col-sm">
                     </div>
@@ -20,4 +21,4 @@ class LoginPage extends React.Component {
     }
 }
 
-export default LoginPage
+export default connect(null, {login})(LoginPage)

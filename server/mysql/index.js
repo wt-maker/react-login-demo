@@ -4,7 +4,7 @@ const client = mysql.createConnection({
     host:'localhost',
     user:'root',
     password:'',
-    database:'wtdatabase'
+    database:'test'
 })
 
 function sqlExcute(sql, arr, callback) {
